@@ -1,0 +1,40 @@
+{
+  "name": "DM Turismo",
+  "short_name": "DM Turismo",
+  "description": "Sistema profissional de gestão de turismo",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "logo_dm.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo_dm.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Viagens",
+      "short_name": "Viagens",
+      "url": "/#/trips",
+      "icons": [{ "src": "logo_dm.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Manutenções",
+      "short_name": "Manutenções",
+      "url": "/#/maintenance",
+      "icons": [{ "src": "logo_dm.svg", "sizes": "192x192" }]
+    }
+  ]
+}

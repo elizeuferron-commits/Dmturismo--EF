@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>E.F. Gestão - Inteligência Operacional</title>
+    
+    <!-- DNS prefetch and preconnect hints for ultra fast initialization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
+    
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="E.F. Gestão" />
+    <link rel="apple-touch-icon" href="/logo_dm.svg" />
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/firebase-messaging-sw.js').then(reg => {
+            console.log('SW registered:', reg);
+          }).catch(err => {
+            console.log('SW registration failed:', err);
+          });
+        });
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-BjO6bP0I.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B2v6ob2p.css">
+  </head>
+  <body>
+    <div id="root">
+      <!-- Splash Screen nativa de alta velocidade (Prevenção absoluta de Tela Branca) -->
+      <style>
+        html, body {
+          margin: 0;
+          padding: 0;
+          background-color: #09090b;
+          font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+        }
+        .splash-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: #09090b;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 999999;
+          overflow: hidden;
+        }
+        .splash-wrapper {
+          text-align: center;
+          padding: 2rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          animation: splashWarmIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .splash-loader-ring {
+          position: relative;
+          width: 58px;
+          height: 58px;
+          margin-bottom: 20px;
+        }
+        .splash-loader-circle {
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          width: 58px;
+          height: 58px;
+          border: 3.5px solid rgba(255, 255, 255, 0.08);
+          border-radius: 50%;
+        }
+        .splash-loader-segment {
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          width: 58px;
+          height: 58px;
+          border: 3.5px solid transparent;
+          border-top-color: #ffffff;
+          border-radius: 50%;
+          animation: splashSpin 0.7s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+          filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.45));
+        }
+        .splash-primary-tag {
+          font-size: 20px;
+          font-weight: 900;
+          color: #ffffff;
+          margin: 0;
+          letter-spacing: -0.04em;
+          text-transform: uppercase;
+        }
+        .splash-second-tag {
+          font-size: 8px;
+          font-weight: 900;
+          color: #ffffff;
+          margin: 4px 0 0 0;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          opacity: 0.8;
+        }
+        .splash-aux-tag {
+          font-size: 9px;
+          color: #52525b;
+          margin-top: 14px;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+        @keyframes splashSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes splashWarmIn {
+          0% { opacity: 0; transform: scale(0.95); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      </style>
+      <div class="splash-overlay">
+        <div class="splash-wrapper">
+          <div class="splash-loader-ring">
+            <div class="splash-loader-circle"></div>
+            <div class="splash-loader-segment"></div>
+          </div>
+          <h1 class="splash-primary-tag">E.F. GESTÃO</h1>
+          <div class="splash-second-tag">Inteligência Operacional</div>
+          <div class="splash-aux-tag">Carregando portal de frotas e ativos...</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

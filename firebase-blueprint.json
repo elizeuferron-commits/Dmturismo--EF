@@ -1,0 +1,589 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System users and their roles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "driver", "Dono / Proprietário", "Gestor de Frotas", "Coordenador Logístico", "Administrativo", "Motorista", "Limpeza / Conservação"] },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role"]
+    },
+    "Vehicle": {
+      "title": "Vehicle",
+      "description": "Vans and buses in the fleet",
+      "type": "object",
+      "properties": {
+        "plate": { "type": "string" },
+        "model": { "type": "string" },
+        "factoryYear": { "type": "string" },
+        "type": { "type": "string", "enum": ["van", "bus"] },
+        "capacity": { "type": "number" },
+        "currentOdometer": { "type": "number" },
+        "licenseExpiration": { "type": "string", "format": "date" },
+        "tourismLicenseExpiration": { "type": "string", "format": "date" },
+        "insuranceExpiration": { "type": "string", "format": "date" },
+        "nextOilChangeKM": { "type": "number" },
+        "nextPreventiveMaintenanceDate": { "type": "string", "format": "date" },
+        "nextMaintenanceKM": { "type": "number" },
+        "lastMaintenanceDate": { "type": "string", "format": "date" },
+        "lastMaintenanceKM": { "type": "number" },
+        "status": { "type": "string", "enum": ["available", "maintenance", "trip"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["plate", "model", "type", "currentOdometer"]
+    },
+    "Employee": {
+      "title": "Employee",
+      "description": "Staff including drivers",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "licenseNumber": { "type": "string" },
+        "licenseCategory": { "type": "string" },
+        "licenseExpiration": { "type": "string", "format": "date" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "workSchedule": {
+          "type": "object",
+          "properties": {
+            "monToFri": {
+              "type": "object",
+              "properties": {
+                "morning": { "type": "object", "properties": { "start": { "type": "string" }, "end": { "type": "string" } } },
+                "afternoon": { "type": "object", "properties": { "start": { "type": "string" }, "end": { "type": "string" } } }
+              }
+            },
+            "saturday": { "type": "object", "properties": { "start": { "type": "string" }, "end": { "type": "string" } } },
+            "sunday": { "type": "object", "properties": { "start": { "type": "string" }, "end": { "type": "string" } } }
+          }
+        }
+      },
+      "required": ["name", "role", "status"]
+    },
+    "FuelTank": {
+      "title": "Fuel Tank",
+      "description": "Internal fuel storage tanks",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "fuelType": { "type": "string" },
+        "capacity": { "type": "number" },
+        "currentLevel": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "fuelType", "capacity", "currentLevel"]
+    },
+    "FuelLog": {
+      "title": "Fuel Log",
+      "description": "Records of vehicle refueling",
+      "type": "object",
+      "properties": {
+        "vehicleId": { "type": "string" },
+        "driverId": { "type": "string" },
+        "fuelTankId": { "type": "string" },
+        "isExternal": { "type": "boolean" },
+        "location": { "type": "string" },
+        "quantity": { "type": "number" },
+        "arlaQuantity": { "type": "number" },
+        "arlaTankId": { "type": "string" },
+        "odometer": { "type": "number" },
+        "cost": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["vehicleId", "quantity", "odometer", "timestamp"]
+    },
+    "MaintenanceLog": {
+      "title": "Maintenance Log",
+      "description": "Vehicle service and repair history",
+      "type": "object",
+      "properties": {
+        "vehicleId": { "type": "string" },
+        "description": { "type": "string" },
+        "type": { "type": "string", "enum": ["preventive", "corrective"] },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "cost": { "type": "number" },
+        "odometer": { "type": "number" },
+        "scheduledDate": { "type": "string", "format": "date" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["vehicleId", "description", "type", "status"]
+    },
+    "StockItem": {
+      "title": "Stock Item",
+      "description": "Raw materials and parts",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "quantity": { "type": "number" },
+        "unit": { "type": "string" },
+        "minQuantity": { "type": "number" }
+      },
+      "required": ["name", "category", "quantity", "unit"]
+    },
+    "StockTransaction": {
+      "title": "Stock Transaction",
+      "description": "Inventory entry and exit records",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "category": { "type": "string" },
+        "type": { "type": "string", "enum": ["ENTRADA", "SAÍDA"] },
+        "quantity": { "type": "number" },
+        "unit": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "justification": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["itemId", "itemName", "type", "quantity", "timestamp"]
+    },
+    "Checklist": {
+      "title": "Checklist",
+      "description": "Vehicle operational inspection checklist",
+      "type": "object",
+      "properties": {
+        "vehicleId": { "type": "string" },
+        "responsible": { "type": "string" },
+        "odometer": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" },
+        "observations": { "type": "string" },
+        "items": { "type": "array" }
+      },
+      "required": ["vehicleId", "responsible", "odometer", "date", "items"]
+    },
+    "FuelEntry": {
+      "title": "Fuel Entry",
+      "description": "Records of fuel refills into storage tanks",
+      "type": "object",
+      "properties": {
+        "tankId": { "type": "string" },
+        "quantity": { "type": "number" },
+        "cost": { "type": "number" },
+        "supplier": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tankId", "quantity", "cost", "timestamp"]
+    },
+    "FinancialTransaction": {
+      "title": "Financial Transaction",
+      "description": "Accounts payable and receivable records",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["payable", "receivable"] },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "amount": { "type": "number" },
+        "dueDate": { "type": "string", "format": "date" },
+        "paymentDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["pending", "paid", "overdue"] },
+        "refId": { "type": "string" },
+        "refType": { "type": "string", "enum": ["maintenance", "trip", "fuel", "other"] },
+        "observations": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "category", "description", "amount", "dueDate", "status", "createdAt"]
+    },
+    "Trip": {
+      "title": "Trip",
+      "description": "Vehicle trips and passenger services",
+      "type": "object",
+      "properties": {
+        "vehicleId": { "type": "string" },
+        "driverId": { "type": "string" },
+        "secondDriverId": { "type": "string" },
+        "title": { "type": "string" },
+        "origin": { "type": "string" },
+        "destination": { "type": "string" },
+        "stops": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "location": { "type": "string" },
+              "arrivalTime": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "tripType": { "type": "string", "enum": ["state", "interstate", "mercosur"] },
+        "status": { "type": "string", "enum": ["scheduled", "active", "completed", "cancelled"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "passengers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "document": { "type": "string" }
+            }
+          }
+        },
+        "passengerCount": { "type": "number" },
+        "documentation": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "checked": { "type": "boolean" }
+            }
+          }
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string" },
+              "type": { "type": "string", "enum": ["image", "pdf", "word", "excel"] }
+            }
+          }
+        },
+        "notes": { "type": "string" }
+      },
+      "required": ["vehicleId", "driverId", "title", "status", "startDate", "tripType"]
+    },
+    "Backup": {
+      "title": "Backup",
+      "description": "Database snapshots for recovery",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "data": { "type": "object" },
+        "size": { "type": "number" }
+      },
+      "required": ["timestamp", "createdBy", "data", "size"]
+    },
+    "AuditLog": {
+      "title": "Audit Log",
+      "description": "Records of user actions for security and tracking",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "entityType": { "type": "string" },
+        "entityId": { "type": "string" },
+        "details": { "type": "string" }
+      },
+      "required": ["timestamp", "userId", "userEmail", "action", "entityType", "entityId"]
+    },
+    "DashboardMessage": {
+      "title": "Dashboard Message",
+      "description": "Messages posted on the community board",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "sender": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["text", "sender", "timestamp"]
+    },
+    "DashboardSettings": {
+      "title": "Dashboard Settings",
+      "description": "Global settings for the dashboard",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    },
+    "MediaShare": {
+      "title": "Media Share",
+      "description": "Images and videos shared on the dashboard by management",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "type": { "type": "string", "enum": ["image", "video"] },
+        "caption": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["url", "type", "ownerId", "ownerName", "createdAt"]
+    },
+    "NewsItem": {
+      "title": "News Item",
+      "description": "Important news and announcements for the fleet",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "isUrgent": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "authorId", "authorName", "createdAt"]
+    },
+    "Journey": {
+      "title": "Journey",
+      "description": "Employee work journey and shift tracking",
+      "type": "object",
+      "properties": {
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "endTime": { "type": "string", "format": "date-time" },
+        "breaks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": { "type": "string", "format": "date-time" },
+              "end": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["active", "on_break", "completed"] },
+        "totalMinutes": { "type": "number" },
+        "location": { "type": "object" }
+      },
+      "required": ["employeeId", "date", "startTime", "status"]
+    },
+    "CharteredRoute": {
+      "title": "Chartered Route",
+      "description": "Recurring fixed-route contracts (Fretados)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "client": { "type": "string" },
+        "type": { "type": "string", "enum": ["factory", "school", "other"] },
+        "daysOfWeek": {
+          "type": "array",
+          "items": { "type": "number", "minimum": 0, "maximum": 6 }
+        },
+        "schedules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "departureTime": { "type": "string" },
+              "returnTime": { "type": "string" }
+            }
+          }
+        },
+        "fixedVehicleId": { "type": "string" },
+        "fixedDriverId": { "type": "string" },
+        "passengers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "phone": { "type": "string" }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "client", "status"]
+    },
+    "FeaturedVideo": {
+      "title": "Featured Video",
+      "description": "Videos featured on the dashboard",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["url", "title"]
+    },
+    "CharterClient": {
+      "title": "Charter Client",
+      "description": "Registered partner corporate or individual client profile for charter services",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "companyName": { "type": "string" },
+        "document": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "notes": { "type": "string" },
+        "fixedRoutes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "schedule": { "type": "string" },
+              "driverId": { "type": "string" },
+              "vehicleId": { "type": "string" },
+              "daysOfWeek": {
+                "type": "array",
+                "items": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    },
+    "CharterClientTrip": {
+      "title": "Charter Client Trip",
+      "description": "Individual scheduled trips for client charters",
+      "type": "object",
+      "properties": {
+        "client": { "type": "string" },
+        "clientId": { "type": "string" },
+        "description": { "type": "string" },
+        "dateTime": { "type": "string", "format": "date-time" },
+        "origin": { "type": "string" },
+        "destination": { "type": "string" },
+        "value": { "type": "number" },
+        "driverId": { "type": "string" },
+        "vehicleId": { "type": "string" },
+        "status": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["client", "dateTime"]
+    },
+    "UserDevice": {
+      "title": "User Device",
+      "description": "FCM tokens registered for user devices to handle push notification broadcasts",
+      "type": "object",
+      "properties": {
+        "token": { "type": "string" },
+        "userId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["token", "userId"]
+    },
+    "TireAlert": {
+      "title": "Tire Alert",
+      "description": "Custom alerts configured for specific tires",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "alertType": { "type": "string" },
+        "thresholdValue": { "type": "string" },
+        "status": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["itemId", "itemName", "alertType", "thresholdValue", "status", "createdAt"]
+    },
+    "TireDossier": {
+      "title": "Tire Dossier",
+      "description": "Technical dossier inspection line sheet for a single tire asset",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "serialNumber": { "type": "string" },
+        "brandOption": { "type": "string" },
+        "dotCode": { "type": "string" },
+        "grooveDepth": { "type": "number" },
+        "currentVehicleId": { "type": "string" },
+        "currentVehiclePlate": { "type": "string" },
+        "wheelPosition": { "type": "string" },
+        "currentOdometer": { "type": "number" },
+        "status": { "type": "string" },
+        "auditorName": { "type": "string" },
+        "notes": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["itemId", "serialNumber", "grooveDepth", "status", "updatedAt"]
+    },
+    "ProprietorTicket": {
+      "title": "Proprietor Ticket",
+      "description": "Service request and direct message tickets sent to the owner/proprietor",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "urgency": { "type": "string", "enum": ["low", "medium", "high"] },
+        "status": { "type": "string", "enum": ["pending", "in_progress", "resolved", "cancelled"] },
+        "createdByUid": { "type": "string" },
+        "createdByName": { "type": "string" },
+        "createdByEmail": { "type": "string" },
+        "createdByRole": { "type": "string" },
+        "vehicleId": { "type": "string" },
+        "replies": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "category", "urgency", "status", "createdByUid", "createdByName", "createdByEmail", "createdAt"]
+    },
+    "StorageBackupLog": {
+      "title": "Storage Backup Log",
+      "description": "Logs of data backups performed to Firebase Storage",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "date": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "paths": { "type": "array", "items": { "type": "string" } },
+        "formats": { "type": "array", "items": { "type": "string" } },
+        "collections": { "type": "array", "items": { "type": "string" } },
+        "success": { "type": "boolean" }
+      },
+      "required": ["timestamp", "date", "createdBy", "paths", "formats", "collections", "success"]
+    },
+    "UserLayout": {
+      "title": "User Layout",
+      "description": "Customizable dashboard widgets reordering preferences",
+      "type": "object",
+      "properties": {
+        "widgetOrder": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["widgetOrder"]
+    }
+  },
+  "firestore": {
+    "users": { "schema": "User", "description": "System users" },
+    "vehicles": { "schema": "Vehicle", "description": "Fleet vehicles" },
+    "employees": { "schema": "Employee", "description": "Staff members" },
+    "fuel_tanks": { "schema": "FuelTank", "description": "Fuel storage" },
+    "fuel_logs": { "schema": "FuelLog", "description": "Refueling history" },
+    "fuel_entries": { "schema": "FuelEntry", "description": "Tank refill history" },
+    "maintenance_logs": { "schema": "MaintenanceLog", "description": "Maintenance history" },
+    "stock_items": { "schema": "StockItem", "description": "General inventory" },
+    "stock_transactions": { "schema": "StockTransaction", "description": "Inventory changes ledger" },
+    "checklists": { "schema": "Checklist", "description": "Operational inspections" },
+    "financial_transactions": { "schema": "FinancialTransaction", "description": "Cash flow records" },
+    "trips": { "schema": "Trip", "description": "Trip and transit records" },
+    "backups": { "schema": "Backup", "description": "System database snapshots" },
+    "storage_backup_logs": { "schema": "StorageBackupLog", "description": "Logs of backups to Firebase Storage" },
+    "audit_logs": { "schema": "AuditLog", "description": "Security and activity tracking" },
+    "settings": { "schema": "DashboardSettings", "description": "Global application settings" },
+    "dashboard_messages": { "schema": "DashboardMessage", "description": "Messages on the dashboard notice board" },
+    "media_shares": { "schema": "MediaShare", "description": "Shared media (images/videos) for the community" },
+    "news_feed": { "schema": "NewsItem", "description": "Official news and announcements feed" },
+    "journeys": { "schema": "Journey", "description": "Employee time tracking logs" },
+    "chartered_routes": { "schema": "CharteredRoute", "description": "Fixed recurring route management" },
+    "featured_videos": { "schema": "FeaturedVideo", "description": "Videos featured on the dashboard" },
+    "charter_clients": { "schema": "CharterClient", "description": "Registered partner client profiles" },
+    "charter_client_trips": { "schema": "CharterClientTrip", "description": "Scheduled individual trip records for corporate services" },
+    "user_devices": { "schema": "UserDevice", "description": "Registered FCM tokens for push notifications" },
+    "tire_alerts": { "schema": "TireAlert", "description": "Tire threshold and alignment alerts" },
+    "tire_dossiers": { "schema": "TireDossier", "description": "Tire technical dossiers" },
+    "proprietor_tickets": { "schema": "ProprietorTicket", "description": "Support tickets and message requests directly addressed to the owner/proprietor" },
+    "users_layouts": { "schema": "UserLayout", "description": "Customizable dashboard widgets configuration per user" },
+    "test": { "schema": { "type": "object", "properties": { "status": { "type": "string" } } }, "description": "Connection test collection" }
+  }
+}

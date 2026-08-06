@@ -1,0 +1,16 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo escuro com borda azul para atalho PWA/Web -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="#09090b" stroke="#1d4ed8" stroke-width="12"/>
+  
+  <g transform="translate(68, 120)">
+    <!-- Letra D -->
+    <path d="M40 40H110C170 40 210 80 210 136C210 192 170 232 110 232H40V40Z" fill="none" stroke="#2563eb" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 40V232" stroke="#3b82f6" stroke-width="36" stroke-linecap="round"/>
+    
+    <!-- Letra M -->
+    <path d="M236 232V40L308 152L380 40V232" fill="none" stroke="#ffffff" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Subtítulo DM TURISMO -->
+  <text x="256" y="420" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="6">DM TURISMO</text>
+</svg>

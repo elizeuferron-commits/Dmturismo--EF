@@ -1,0 +1,33 @@
+{
+  "short_name": "DM Turismo",
+  "name": "DM Turismo - Gestão Operacional",
+  "icons": [
+    {
+      "src": "logo_dm.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "logo_dm.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["travel", "productivity"],
+  "shortcuts": [
+    {
+      "name": "DM Turismo",
+      "short_name": "DM Turismo",
+      "description": "Abrir aplicativo DM Turismo",
+      "url": ".",
+      "icons": [{ "src": "logo_dm.svg", "sizes": "512x512" }]
+    }
+  ]
+}
